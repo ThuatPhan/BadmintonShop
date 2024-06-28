@@ -58,7 +58,7 @@ const BestSeller = () => {
                                                             <i className="fas fa-star text-primary"></i>
                                                             <i className="fas fa-star"></i>
                                                         </div> */}
-                                                        <h4 className="mb-3">{product.price}đ</h4>
+                                                        <h4 className="mb-3">{product.price.toLocaleString()}đ</h4>
                                                         <a href="#" className="btn border border-secondary rounded-pill px-3 text-primary">
                                                             <i className="fa fa-shopping-bag me-2 text-primary"></i>
                                                             Add to cart
