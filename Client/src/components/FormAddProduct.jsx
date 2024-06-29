@@ -58,7 +58,7 @@ const FormAddProduct = ({ onCancel }) => {
                 >
                     &times;
                 </button>
-                <h1 style={{textAlign:"center"}}>Thêm sản phẩm mới</h1>
+                <h1 style={{ textAlign: "center" }}>Thêm sản phẩm mới</h1>
                 <form className="needs-validation" noValidate encType="multipart/form-data">
                     <div className="mb-3">
                         <label htmlFor="name" className="form-label">Tên sản phẩm:</label>

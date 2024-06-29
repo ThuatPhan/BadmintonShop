@@ -7,6 +7,7 @@ import BestSeller from "../components/BestSeller"
 import Fact from "../components/Fact"
 import Footer from "../components/Footer"
 import BackToTop from "../components/BackToTop"
+import Spinner from "../components/Spinner"
 
 const HomePage = () => {
     return (
@@ -19,7 +20,7 @@ const HomePage = () => {
             <BestSeller />
             <Fact />
             <Footer />
-            <BackToTop/>
+            <BackToTop />
         </>
     )
 }
