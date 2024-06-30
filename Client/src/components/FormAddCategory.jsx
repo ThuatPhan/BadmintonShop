@@ -2,7 +2,7 @@ import { useState } from "react";
 import useCategory from "../hooks/useCategory";
 const FormAddCategory = ({ onCancel }) => {
 
-    const { loading, createCategory } = useCategory()
+    const { createCategory } = useCategory()
 
     const [categoryName, setCategoryName] = useState("");
 
@@ -54,9 +54,7 @@ const FormAddCategory = ({ onCancel }) => {
                         <label htmlFor="name" className="form-label">Tên danh mục</label>
                         <input
                             type="text"
-                            name="name"
                             className="form-control"
-                            id="name"
                             required
                             onChange={(e) => { setCategoryName(e.target.value) }}
                         />
