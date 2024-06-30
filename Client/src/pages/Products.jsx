@@ -29,7 +29,7 @@ const initialProducts = [
     }
 ];
 
-const ProductTable = () => {
+const ProductsPage = () => {
     const [products, setProducts] = useState(initialProducts);
     const [showFormAdd, setShowFormAdd] = useState(false);
     const [showFormEdit, setShowFormEdit] = useState(false);
@@ -107,4 +107,4 @@ const ProductTable = () => {
     );
 };
 
-export default ProductTable;
+export default ProductsPage;
