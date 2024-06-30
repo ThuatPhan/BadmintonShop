@@ -113,7 +113,7 @@ const FormAddProduct = ({ onCancel }) => {
 
                     <div className="mb-3">
                         <label className="form-label">Ảnh sản phẩm</label>
-                        <input type="file" className="form-control" onChange={handleFileChange} />
+                        <input type="file" required className="form-control" onChange={handleFileChange} />
                         {file && (
                             <div style={{ marginTop: '10px' }}>
                                 <img src={URL.createObjectURL(file)} alt="Image Preview" style={{ maxWidth: '100%', height: 'auto' }} />
