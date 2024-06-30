@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import useCategory from "../hooks/useCategory";
 
 const FormEditCategory = ({ onCancel, idToEdit }) => {
-    const { loading, getCategory, updateCategory } = useCategory()
+    const { getCategory, updateCategory } = useCategory()
     const [category, setCategory] = useState({ id: null, name: "" })
 
     useEffect(() => {
@@ -62,8 +62,6 @@ const FormEditCategory = ({ onCancel, idToEdit }) => {
                         <label htmlFor="name" className="form-label">Tên danh mục</label>
                         <input
                             type="text"
-                            name="name"
-                            id="name"
                             className="form-control"
                             required
                             value={category.name}

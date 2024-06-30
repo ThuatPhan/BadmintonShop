@@ -9,13 +9,7 @@ const useCategory = () => {
             try {
                 setLoading(true)
 
-                const response = await fetch("/Api/api/categories", {
-                    method: "GET",
-                    headers: new Headers({
-                        "ngrok-skip-browser-warning": "69420",
-                    })
-                })
-
+                const response = await fetch("/Api/api/categories")
                 const data = await response.json()
 
                 if (response.ok) {
