@@ -30,15 +30,7 @@ const useCategory = () => {
     const getCategory = async (categoryId) => {
         try {
             setLoading(true)
-            const response = await fetch(`/Api/api/categories/${categoryId}`,
-                {
-                    method: "GET",
-                    headers: new Headers(
-                        {
-                            "ngrok-skip-browser-warning": "69420",
-                        }
-                    )
-                })
+            const response = await fetch(`/Api/api/categories/${categoryId}`)
             const data = await response.json()
             if (response.ok) {
                 return data;

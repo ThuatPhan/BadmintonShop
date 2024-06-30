@@ -1,27 +1,46 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import useCategory from "../hooks/useCategory";
+import useProduct from "../hooks/useProduct";
+
 const FormEditProduct = ({ onCancel, idToEdit }) => {
+    const { categories } = useCategory()
+    const { getProduct, updateProduct } = useProduct()
 
-    console.log(idToEdit);
-
-
-    const [newProduct, setNewProduct] = useState({
+    const [productInfor, setProductInfor] = useState({
         name: '',
-        price: '',
-        quantity: '',
-        category: '',
         description: '',
-        images: null
+        price: '',
+        categoryId: '',
     });
 
-    const handleInputChange = (e) => {
-        const { name, value } = e.target;
-        setNewProduct({ ...newProduct, [name]: value });
-    };
+    const [imageUrl, setImageUrl] = useState("")
+    const [selectedFile, setSelectedFile] = useState(null)
+
+    useEffect(() => {
+
+        const getProductToEdit = async () => {
+            const product = await getProduct(idToEdit)
+            const { name, description, price, imageUrl, categoryId } = product
+
+            setProductInfor({ name, description, price, categoryId })
+            setImageUrl(`http://localhost:8080${imageUrl}`)
+        }
+
+        getProductToEdit()
+
+    }, [])
 
     const handleFileChange = (e) => {
-        const file = e.target.files[0];
-        setNewProduct({ ...newProduct, images: file });
-    };
+        const file = e.target.files[0]
+        if (file) {
+            setSelectedFile(file)
+        }
+    }
+
+    const handleUpdateProduct = async () => {
+        await updateProduct(idToEdit, productInfor, selectedFile)
+    }
+
 
     return (
         <div style={{
@@ -61,38 +80,89 @@ const FormEditProduct = ({ onCancel, idToEdit }) => {
                 >
                     &times;
                 </button>
-                <h1 style={{textAlign:"center"}}>Chỉnh sửa sản phẩm</h1>
-                <form className="needs-validation" noValidate encType="multipart/form-data">
+                <h1 style={{ textAlign: "center" }}>Chỉnh sửa sản phẩm</h1>
+                <form className="needs-validation" encType="multipart/form-data" onSubmit={handleUpdateProduct}>
                     <div className="mb-3">
                         <label htmlFor="name" className="form-label">Tên sản phẩm: </label>
-                        <input type="text" name="name" className="form-control" id="name" value={newProduct.name} onChange={handleInputChange} required />
+                        <input
+                            type="text"
+                            className="form-control"
+                            required
+                            value={productInfor.name}
+                            onChange={(e) => setProductInfor({ ...productInfor, name: e.target.value })}
+                        />
                     </div>
                     <div className="mb-3">
                         <label htmlFor="price" className="form-label">Giá tiền:</label>
-                        <input type="text" name="price" className="form-control" id="price" value={newProduct.price} onChange={handleInputChange} required />
-                    </div>
-                    <div className="mb-3">
-                        <label htmlFor="quantity" className="form-label">Số lượng:</label>
-                        <input type="number" name="quantity" className="form-control" id="quantity" value={newProduct.quantity} onChange={handleInputChange} required />
+                        <input
+                            type="text"
+                            className="form-control"
+                            required
+                            value={productInfor.price}
+                            onChange={(e) => setProductInfor({ ...productInfor, price: e.target.value })}
+                        />
                     </div>
                     <div className="mb-3">
                         <label htmlFor="category" className="form-label">Danh mục sản phẩm:</label>
-                        <select name="category" className="form-control" id="category" value={newProduct.category} onChange={handleInputChange}>
-                            <option value="">Select Category</option>
-                            <option value="1">Category 1</option>
-                            <option value="2">Category 2</option>
+                        <select
+                            className="form-control"
+                            onChange={(e) => setProductInfor({ ...productInfor, categoryId: e.target.value })} >
+                            <option>Chọn danh mục</option>
+                            {
+                                categories.map((category) => {
+                                    return (
+                                        <option
+                                            key={category.id}
+                                            value={category.id}
+                                            selected={category.id === productInfor.categoryId}
+                                        >
+                                            {category.name}
+                                        </option>
+                                    )
+                                })
+                            }
                         </select>
                     </div>
                     <div className="mb-3">
                         <label htmlFor="description" className="form-label">Mô tả sản phẩm:</label>
-                        <textarea name="description" className="form-control" id="description" value={newProduct.description} onChange={handleInputChange} required></textarea>
+                        <textarea
+                            className="form-control"
+                            required
+                            value={productInfor.description}
+                            onChange={(e) => setProductInfor({ ...productInfor, description: e.target.value })}
+                        >
+                        </textarea>
                     </div>
                     <div className="mb-3">
                         <label className="form-label">Ảnh sản phẩm</label>
-                        <input type="file" multiple name="images" className="form-control" onChange={handleFileChange} />
+                        <input
+                            type="file"
+                            className="form-control"
+                            required
+                            onChange={handleFileChange}
+                        />
                     </div>
-                    <button type="submit" className="btn btn-primary" style={{ marginRight: "10px" }}>Add Product</button>
-                    <button type="button" className="btn btn-danger" onClick={onCancel}>Cancel</button>
+                    <div style={{ marginTop: '10px' }}>
+                        <img
+                            src={selectedFile ? URL.createObjectURL(selectedFile) : imageUrl}
+                            alt="Image Preview"
+                            style={{ maxWidth: '100%', height: 'auto' }}
+                        />
+                    </div>
+                    <button
+                        type="submit"
+                        className="btn btn-primary"
+                        style={{ marginRight: "10px" }}
+                    >
+                        Lưu thay đổi
+                    </button>
+                    <button
+                        type="button"
+                        className="btn btn-danger"
+                        onClick={onCancel}
+                    >
+                        Huỷ
+                    </button>
                 </form>
             </div>
         </div>

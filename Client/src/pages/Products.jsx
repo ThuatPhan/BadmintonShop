@@ -5,23 +5,30 @@ import useProduct from '../hooks/useProduct';
 
 
 const ProductsPage = () => {
-    const { products } = useProduct()
+    const { products, deleteProduct } = useProduct()
     const [showFormAdd, setShowFormAdd] = useState(false);
     const [showFormEdit, setShowFormEdit] = useState(false);
-    const [idToEdit, setIdToDelete] = useState();
+    const [idToEdit, setIdToEdit] = useState();
 
     const handleShowEditForm = (id) => {
-        setIdToDelete(id)
+        setIdToEdit(id)
         setShowFormEdit(true)
+    }
+
+    const handleDeleteProduct = async (product) => {
+        const confirm = window.confirm(`Bạn chắc chắn muốn xoá sản phẩm ${product.name} ?`)
+        if (confirm) {
+            await deleteProduct(product.id)
+        }
     }
 
     return (
         <div style={{ display: 'flex', justifyContent: 'center', position: 'relative' }}>
             <div style={{ width: '90%' }}>
-                <h1>Products List</h1>
+                <h1>Danh sách sản phẩm</h1>
                 <div>
                     <button onClick={() => setShowFormAdd(true)} className="btn btn-primary mb-3">
-                        Add New Product
+                        Thêm sản phẩm
                     </button>
                 </div>
                 <table className="table table-bordered" style={{ width: '100%' }}>
@@ -49,7 +56,7 @@ const ProductsPage = () => {
                                     <button className="btn btn-success btn-sm" onClick={() => handleShowEditForm(product.id)}>Edit</button>
                                     <button
                                         className="btn btn-danger btn-sm"
-                                        onClick={() => handleDelete(product.id)}
+                                        onClick={() => handleDeleteProduct(product)}
                                     >
                                         Delete
                                     </button>
