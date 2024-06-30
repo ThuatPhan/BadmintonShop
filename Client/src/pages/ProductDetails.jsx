@@ -4,8 +4,10 @@ import Footer from "../components/Footer"
 
 import yonexNanoflare002f from "../assets/img/nanoflare-002f.png"
 import yonexAstrox88sPro from "../assets/img/astrox-88s-pro.png"
+import { useState } from 'react'
 
 const ProductDetails = () => {
+    const [quantity, setQuantity] = useState(1)
 
     const products = [
         {
@@ -90,12 +92,19 @@ const ProductDetails = () => {
                                     </p>
                                     <div className="input-group quantity mb-5" style={{ width: '100px' }}>
                                         <div className="input-group-btn">
-                                            <button className="btn btn-sm btn-minus rounded-circle bg-light border">
-                                                <i className="fa fa-minus"></i>
+                                            <button
+                                                className="btn btn-sm btn-minus rounded-circle bg-light border"
+                                                onClick={() => {
+                                                    if (quantity > 1) {
+                                                        setQuantity(quantity - 1)
+                                                    }
+                                                }}
+                                            >
+                                                <i className="fa fa-minus" ></i>
                                             </button>
                                         </div>
-                                        <input type="text" className="form-control form-control-sm text-center border-0" value="1" />
-                                        <div className="input-group-btn">
+                                        <input type="text" className="form-control form-control-sm text-center border-0" value={quantity} />
+                                        <div className="input-group-btn" onClick={() => { setQuantity((prev) => prev + 1) }}>
                                             <button className="btn btn-sm btn-plus rounded-circle bg-light border">
                                                 <i className="fa fa-plus"></i>
                                             </button>

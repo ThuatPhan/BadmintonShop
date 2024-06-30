@@ -8,7 +8,7 @@ export default defineConfig({
     port: 5000,
     proxy: {
       '/Api': {
-        target: 'https://2a13-101-99-32-135.ngrok-free.app/',
+        target: 'https://renewing-beagle-complete.ngrok-free.app/',
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/Api/, ''),
       },

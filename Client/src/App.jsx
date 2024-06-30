@@ -9,6 +9,7 @@ import ProductDetails from "./pages/ProductDetails"
 import RegisterPage from "./pages/Register"
 import LoginPage from "./pages/Login"
 import ProductPage from "./pages/Products"
+import CaterogyPage from "./pages/Categories"
 
 function App() {
   const { user } = useContext(AuthContext)
@@ -23,6 +24,7 @@ function App() {
       <Route path="/details" element={<ProductDetails />} />
       <Route path="/cart" element={user ? <HomePage /> : <Cart />} />
       <Route path="/checkout" element={user ? <HomePage /> : <Checkout />} />
+      <Route path="/admin/category" element={<CaterogyPage />} />
     </Routes>
   )
 }
