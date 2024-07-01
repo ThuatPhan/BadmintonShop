@@ -44,6 +44,7 @@ const RegisterPage = () => {
                         />
                     </div>
                     <button type="submit" style={styles.btnLogin}>{loading ? "Đang tạo tài khoản" : "Đăng kí"}</button>
+                    <a href="/login" style={styles.forgotPassword}>Đã có tài khoản? <b>Đăng nhập</b></a>
                 </form>
             </div>
         </div>

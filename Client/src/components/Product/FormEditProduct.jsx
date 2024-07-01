@@ -1,33 +1,20 @@
 import { useEffect, useState } from "react";
-import useCategory from "../hooks/useCategory";
-import useProduct from "../hooks/useProduct";
+import useCategory from "../../hooks/useCategory";
+import useProduct from "../../hooks/useProduct";
 
 const FormEditProduct = ({ onCancel, idToEdit }) => {
     const { categories } = useCategory()
     const { getProduct, updateProduct } = useProduct()
-
-    const [productInfor, setProductInfor] = useState({
-        name: '',
-        description: '',
-        price: '',
-        categoryId: '',
-    });
-
-    const [imageUrl, setImageUrl] = useState("")
+    const [productInfor, setProductInfor] = useState()
     const [selectedFile, setSelectedFile] = useState(null)
 
     useEffect(() => {
-
-        const getProductToEdit = async () => {
+        const getProductInfor = async () => {
             const product = await getProduct(idToEdit)
-            const { name, description, price, imageUrl, categoryId } = product
-
-            setProductInfor({ name, description, price, categoryId })
-            setImageUrl(`http://localhost:8080${imageUrl}`)
+            setProductInfor(product)
         }
 
-        getProductToEdit()
-
+        getProductInfor()
     }, [])
 
     const handleFileChange = (e) => {
@@ -38,9 +25,10 @@ const FormEditProduct = ({ onCancel, idToEdit }) => {
     }
 
     const handleUpdateProduct = async () => {
-        await updateProduct(idToEdit, productInfor, selectedFile)
+        //remove category name
+        const { name, description, price, categoryId } = productInfor
+        await updateProduct(idToEdit, { name, price, categoryId, description }, selectedFile)
     }
-
 
     return (
         <div style={{
@@ -83,12 +71,12 @@ const FormEditProduct = ({ onCancel, idToEdit }) => {
                 <h1 style={{ textAlign: "center" }}>Chỉnh sửa sản phẩm</h1>
                 <form className="needs-validation" encType="multipart/form-data" onSubmit={handleUpdateProduct}>
                     <div className="mb-3">
-                        <label htmlFor="name" className="form-label">Tên sản phẩm: </label>
+                        <label htmlFor="name" className="form-label">Tên sản phẩm:</label>
                         <input
                             type="text"
                             className="form-control"
                             required
-                            value={productInfor.name}
+                            value={productInfor?.name}
                             onChange={(e) => setProductInfor({ ...productInfor, name: e.target.value })}
                         />
                     </div>
@@ -98,7 +86,7 @@ const FormEditProduct = ({ onCancel, idToEdit }) => {
                             type="text"
                             className="form-control"
                             required
-                            value={productInfor.price}
+                            value={productInfor?.price}
                             onChange={(e) => setProductInfor({ ...productInfor, price: e.target.value })}
                         />
                     </div>
@@ -114,7 +102,7 @@ const FormEditProduct = ({ onCancel, idToEdit }) => {
                                         <option
                                             key={category.id}
                                             value={category.id}
-                                            selected={category.id === productInfor.categoryId}
+                                            selected={category.id === productInfor?.categoryId}
                                         >
                                             {category.name}
                                         </option>
@@ -128,7 +116,7 @@ const FormEditProduct = ({ onCancel, idToEdit }) => {
                         <textarea
                             className="form-control"
                             required
-                            value={productInfor.description}
+                            value={productInfor?.description}
                             onChange={(e) => setProductInfor({ ...productInfor, description: e.target.value })}
                         >
                         </textarea>
@@ -138,13 +126,12 @@ const FormEditProduct = ({ onCancel, idToEdit }) => {
                         <input
                             type="file"
                             className="form-control"
-                            required
                             onChange={handleFileChange}
                         />
                     </div>
                     <div style={{ marginTop: '10px' }}>
                         <img
-                            src={selectedFile ? URL.createObjectURL(selectedFile) : imageUrl}
+                            src={selectedFile ? URL.createObjectURL(selectedFile) : `http://localhost:8080${productInfor?.imageUrl}`}
                             alt="Image Preview"
                             style={{ maxWidth: '100%', height: 'auto' }}
                         />

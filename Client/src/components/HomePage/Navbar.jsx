@@ -1,4 +1,9 @@
+import useCategory from "../../hooks/useCategory"
+import Search from "./Search"
+
 const Navbar = () => {
+
+    const { categories } = useCategory()
     return (
         <>
             <div className="container-fluid fixed-top">
@@ -13,23 +18,26 @@ const Navbar = () => {
                                 <a href="/" className="nav-item nav-link active">Trang chủ</a>
                                 <a href="/shop" className="nav-item nav-link">Shop</a>
                                 <div className="nav-item dropdown">
-                                    <a href="#" className="nav-link dropdown-toggle" data-bs-toggle="dropdown">Danh mục</a>
-                                    <div className="dropdown-menu m-0 bg-secondary rounded-0">
-                                        <a href="/cart" className="dropdown-item">Cart</a>
-                                        <a href="chackout.html" className="dropdown-item">Chackout</a>
-                                        <a href="testimonial.html" className="dropdown-item">Testimonial</a>
-                                        <a href="404.html" className="dropdown-item">404 Page</a>
+                                    <a href="#" className="nav-link dropdown-toggle" data-bs-toggle="dropdown">Danh mục sản phẩm</a>
+                                    <div className="dropdown-menu mr-4  bg-secondary rounded-0">
+                                        {
+                                            categories.map((category) => (
+                                                <a key={category.id} href={`/product-of-category/${category.id}`} className="dropdown-item">{category.name}</a>
+                                            ))
+                                        }
                                     </div>
                                 </div>
-                                <a href="contact.html" className="nav-item nav-link">Contact</a>
+                                <a href="#" className="nav-item nav-link">Liên hệ</a>
                             </div>
                             <div className="d-flex m-3 me-0">
-                                <button className="btn-search btn border border-secondary btn-md-square rounded-circle bg-white me-4" data-bs-toggle="modal" data-bs-target="#searchModal"><i className="fas fa-search text-primary"></i></button>
+                                <button className="btn-search btn border border-secondary btn-md-square rounded-circle bg-white me-4" data-bs-toggle="modal" data-bs-target="#searchModal">
+                                    <i className="fas fa-search text-primary"></i>
+                                </button>
+
                                 <a href="#" className="position-relative me-4 my-auto" onClick={() => window.location.href = "/cart"}>
                                     <i className="fa fa-shopping-bag fa-2x"></i>
-                                    <span className="position-absolute bg-secondary rounded-circle d-flex align-items-center justify-content-center text-dark px-1" style={{ top: "-5px", left: "15px", height: "20px", minWidth: "20px" }}>3</span>
                                 </a>
-                                <a href="#" className="my-auto">
+                                <a href="/login" className="my-auto">
                                     <i className="fas fa-user fa-2x"></i>
                                 </a>
                             </div>
@@ -37,6 +45,7 @@ const Navbar = () => {
                     </nav>
                 </div>
             </div>
+            <Search />
         </>
     )
 }

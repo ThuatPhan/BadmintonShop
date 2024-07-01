@@ -1,70 +1,37 @@
-import Navbar from "../components/Navbar"
-import Footer from "../components/Footer"
-
-import yonexNanoflare002f from "../assets/img/nanoflare-002f.png"
-import yonexAstrox88sPro from "../assets/img/astrox-88s-pro.png"
+import Navbar from "../components/HomePage/Navbar"
+import Footer from "../components/HomePage/Footer"
+import useCart from "../hooks/useCart"
 import { useEffect, useState } from "react"
 
+
 const Cart = () => {
+    const { cartItems, increaseQuantity, decreaseQuantity, deleteItem } = useCart()
+    const [total, setTotal] = useState(0)
 
-    const [products, setProducts] = useState([
-        {
-            id: 1,
-            name: "Yonex Nanoflare 02F",
-            price: 100,
-            quantity: 1,
-            image: yonexNanoflare002f
-        },
-        {
-            id: 2,
-            name: "Yonex Astrox 88S Pro",
-            price: 200,
-            quantity: 1,
-            image: yonexAstrox88sPro
-        },
-        {
-            id: 3,
-            name: "Yonex Nanoflare 02F",
-            price: 300,
-            quantity: 1,
-            image: yonexNanoflare002f
-        }
-    ])
-
-    const handleDecrease = (productId) => {
-        setProducts(products.map((product) => {
-            return product.id === productId && product.quantity > 1 ? { ...product, quantity: product.quantity - 1 } : product
-        }))
-    }
-
-    const handleIncrease = (productId) => {
-        setProducts(products.map((product) => {
-            return product.id === productId ? { ...product, quantity: product.quantity + 1 } : product
-        }))
-    }
-
-    const handleDelete = (productId) => {
-        setProducts(products.filter((product) => product.id != productId))
-    }
-
-    const [total, setTotal] = useState(
-        products.reduce((accumulator, currentValue) => {
-            return accumulator + currentValue.price * currentValue.quantity
-        }, 0)
-    )
-
-    const [shipFee, setShipFee] = useState(0)
 
     useEffect(() => {
 
-        const newTotal = products.reduce((accumulator, currentValue) => {
-            return accumulator + currentValue.price * currentValue.quantity
-        }, 0)
+        const totalAmount = cartItems.reduce((sum, cartItem) => sum + cartItem.total, 0)
+        setTotal(totalAmount)
 
-        setTotal(newTotal)
-        setShipFee(newTotal >= 900 ? 0 : 200)
+    }, [cartItems])
 
-    }, [products])
+
+    const handleIncrease = async (cartItemId) => {
+        await increaseQuantity(cartItemId)
+    }
+
+    const handleDecrease = async (cartItem) => {
+        if (cartItem.quantity === 1) {
+            deleteItem(cartItem.cartItemId)
+        } else {
+            await decreaseQuantity(cartItem.cartItemId)
+        }
+    }
+
+    const handleDelete = async (cartItemId) => {
+        await deleteItem(cartItemId)
+    }
 
     return (
         <>
@@ -85,40 +52,45 @@ const Cart = () => {
                             </thead>
                             <tbody>
                                 {
-                                    products.map((item) => {
+                                    cartItems.map((item) => {
                                         return (
-                                            <tr key={item.id}>
+                                            <tr key={item.cartItemId}>
                                                 <td>
                                                     <div className="d-flex align-items-center">
-                                                        <img src={item.image} className="img-fluid me-5 rounded-circle" style={{ width: '80px', height: '80px' }} alt="" />
+                                                        <img src={`http://localhost:8080${item.imageUrl}`} className="img-fluid me-5" style={{ width: '80px', height: '80px' }} alt="" />
                                                     </div>
                                                 </td>
                                                 <td>
-                                                    <p className="mb-0 mt-4">{item.name}</p>
+                                                    <p className="mb-0 mt-4">{item.productName}</p>
                                                 </td>
                                                 <td>
-                                                    <p className="mb-0 mt-4">{item.price}</p>
+                                                    <p className="mb-0 mt-4">{item.price.toLocaleString()}đ</p>
                                                 </td>
                                                 <td>
                                                     <div className="input-group quantity mt-4" style={{ width: '100px' }}>
                                                         <div className="input-group-btn">
-                                                            <button className="btn btn-sm btn-minus rounded-circle bg-light border" onClick={() => handleDecrease(item.id)}>
+                                                            <button className="btn btn-sm btn-minus rounded-circle bg-light border" onClick={() => handleDecrease(item)} >
                                                                 <i className="fa fa-minus"></i>
                                                             </button>
                                                         </div>
-                                                        <input type="text" className="form-control form-control-sm text-center border-0" value={item.quantity} />
+                                                        <input
+                                                            type="text"
+                                                            className="form-control form-control-sm text-center border-0"
+                                                            value={item.quantity}
+                                                            readOnly
+                                                        />
                                                         <div className="input-group-btn">
-                                                            <button className="btn btn-sm btn-plus rounded-circle bg-light border" onClick={() => handleIncrease(item.id)}>
+                                                            <button className="btn btn-sm btn-plus rounded-circle bg-light border" onClick={() => handleIncrease(item.cartItemId)} >
                                                                 <i className="fa fa-plus"></i>
                                                             </button>
                                                         </div>
                                                     </div>
                                                 </td>
                                                 <td>
-                                                    <p className="mb-0 mt-4">{item.price * item.quantity}</p>
+                                                    <p className="mb-0 mt-4">{item.total.toLocaleString()}đ</p>
                                                 </td>
                                                 <td>
-                                                    <button className="btn btn-md rounded-circle bg-light border mt-4" onClick={() => handleDelete(item.id)}>
+                                                    <button className="btn btn-md rounded-circle bg-light border mt-4" onClick={() => handleDelete(item.cartItemId)}>
                                                         <i className="fa fa-times text-danger"></i>
                                                     </button>
                                                 </td>
@@ -137,23 +109,11 @@ const Cart = () => {
                                     <h1 className="display-6 mb-4">
                                         Thông tin thanh toán
                                     </h1>
-                                    <div className="d-flex justify-content-between mb-4">
-                                        <h5 className="mb-0 me-4">Tạm tính:</h5>
-                                        <p className="mb-0">
-                                            {total}
-                                        </p>
-                                    </div>
-                                    <div className="d-flex justify-content-between">
-                                        <h5 className="mb-0 me-4">Vận chuyển</h5>
-                                        <div>
-                                            <p className="mb-0">Phí vận chuyển: {shipFee}đ</p>
-                                        </div>
-                                    </div>
                                 </div>
                                 <div className="py-4 mb-4 border-top border-bottom d-flex justify-content-between">
                                     <h5 className="mb-0 ps-4 me-4">Tổng cộng</h5>
                                     <p className="mb-0 pe-4">
-                                        {total + shipFee}
+                                        {total.toLocaleString()}đ
                                     </p>
                                 </div>
                                 <button className="btn border-secondary rounded-pill px-4 py-3 text-primary text-uppercase mb-4 ms-4" type="button"

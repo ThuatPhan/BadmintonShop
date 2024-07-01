@@ -1,6 +1,6 @@
 import { useState } from "react";
-import useProduct from "../hooks/useProduct";
-import useCategory from "../hooks/useCategory";
+import useProduct from "../../hooks/useProduct";
+import useCategory from "../../hooks/useCategory";
 
 const FormAddProduct = ({ onCancel }) => {
     const { categories } = useCategory();
@@ -15,8 +15,7 @@ const FormAddProduct = ({ onCancel }) => {
         categoryId: null,
     });
 
-    const handleCreateProduct = async (e) => {
-        e.preventDefault();
+    const handleCreateProduct = async () => {
         await createProduct(newProduct, file);
     };
 
@@ -110,7 +109,6 @@ const FormAddProduct = ({ onCancel }) => {
                             ))}
                         </select>
                     </div>
-
                     <div className="mb-3">
                         <label className="form-label">Ảnh sản phẩm</label>
                         <input type="file" required className="form-control" onChange={handleFileChange} />

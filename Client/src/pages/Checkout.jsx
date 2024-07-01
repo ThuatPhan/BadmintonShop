@@ -1,44 +1,11 @@
-import Navbar from "../components/Navbar"
-import Footer from "../components/Footer"
+import Navbar from "../components/HomePage/Navbar"
+import Footer from "../components/HomePage/Footer"
+import useProduct from "../hooks/useProduct"
 
-
-import yonexNanoflare002f from "../assets/img/nanoflare-002f.png"
-import yonexAstrox88sPro from "../assets/img/astrox-88s-pro.png"
-import { useState } from "react"
 
 const Chackout = () => {
 
-    const products = [
-        {
-            id: 1,
-            name: "Yonex Nanoflare 02F",
-            price: 100,
-            quantity: 1,
-            image: yonexNanoflare002f
-        },
-        {
-            id: 2,
-            name: "Yonex Astrox 88S Pro",
-            price: 200,
-            quantity: 2,
-            image: yonexAstrox88sPro
-        },
-        {
-            id: 3,
-            name: "Yonex Nanoflare 02F",
-            price: 300,
-            quantity: 1,
-            image: yonexNanoflare002f
-        }
-    ]
-
-    const [total, setTotal] = useState(
-        products.reduce((accumulator, currentValue) => {
-            return accumulator + currentValue.price * currentValue.quantity;
-        }, 0)
-    )
-
-    const [shipFee, setShipFee] = useState(total >= 900 ? 0 : 200)
+    const { products } = useProduct()
 
     return (
         <>
@@ -83,9 +50,9 @@ const Chackout = () => {
                                             <tr>
                                                 <th scope="col">Sản phẩm</th>
                                                 <th scope="col">Tên</th>
-                                                <th scope="col">Giá</th>
                                                 <th scope="col">Số lượng</th>
-                                                <th scope="col">Tổng cộng</th>
+                                                <th scope="col">Giá</th>
+                                                <th scope="col">Tạm tính</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -95,48 +62,17 @@ const Chackout = () => {
                                                         <tr key={item.id}>
                                                             <th scope="row">
                                                                 <div className="d-flex align-items-center mt-2">
-                                                                    <img src={item.image} className="img-fluid rounded-circle" style={{ width: '90px', height: '90px' }} alt="" />
+                                                                    <img src={`http://localhost:8080${item.imageUrl}`} className="img-fluid rounded" style={{ width: '90px', height: '90px' }} alt="" />
                                                                 </div>
                                                             </th>
                                                             <td className="py-5">{item.name}</td>
+                                                            <td className="py-5">2</td>
                                                             <td className="py-5">{item.price}</td>
-                                                            <td className="py-5">{item.quantity}</td>
-                                                            <td className="py-5">{item.price * item.quantity}</td>
+                                                            <td className="py-5">{item.price * 2}</td>
                                                         </tr>
                                                     )
                                                 })
                                             }
-                                            <tr>
-                                                <th scope="row">
-                                                </th>
-                                                <td className="py-5"></td>
-                                                <td className="py-5"></td>
-                                                <td className="py-5">
-                                                    <p className="mb-0 text-dark py-3">Tổng cộng</p>
-                                                </td>
-                                                <td className="py-5">
-                                                    <div className="py-3 border-bottom border-top">
-                                                        <p className="mb-0 text-dark">
-                                                            {total}
-                                                        </p>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <th scope="row">
-                                                </th>
-                                                <td className="py-5">
-                                                    <p className="mb-0 text-dark py-4">Shipping: {shipFee}đ</p>
-                                                </td>
-                                                <td colSpan="3" className="py-5">
-                                                    <div className="form-check text-start"></div>
-                                                    <div className="form-check text-start">
-                                                        <input type="checkbox" className="form-check-input bg-primary border-0" id="Shipping-1" name="Shipping-1" value="Shipping" checked={total >= 900} />
-                                                        <label className="form-check-label" htmlFor="Shipping-1">Miễn phí vận chuyển</label>
-                                                    </div>
-                                                    <div className="form-check text-start"></div>
-                                                </td>
-                                            </tr>
                                             <tr>
                                                 <th scope="row">
                                                 </th>
@@ -146,9 +82,9 @@ const Chackout = () => {
                                                 <td className="py-5"></td>
                                                 <td className="py-5"></td>
                                                 <td className="py-5">
-                                                    <div className="py-3 border-bottom border-top">
-                                                        <p className="mb-0 text-dark">
-                                                            {total + shipFee}
+                                                    <div className="border-bottom border-top">
+                                                        <p className="text-dark">
+                                                            150.000.000đ
                                                         </p>
                                                     </div>
                                                 </td>
@@ -157,7 +93,7 @@ const Chackout = () => {
                                     </table>
                                 </div>
                                 <div className="row g-4 text-center align-items-center justify-content-center pt-4">
-                                    <button type="button" className="btn border-secondary py-3 px-4 text-uppercase w-100 text-primary">Place Order</button>
+                                    <button type="button" className="btn border-secondary py-3 px-4 text-uppercase w-100 text-primary">Đặt hàng</button>
                                 </div>
                             </div>
                         </div>
