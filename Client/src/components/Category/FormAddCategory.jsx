@@ -1,5 +1,6 @@
 import { useState } from "react";
-import useCategory from "../hooks/useCategory";
+import useCategory from "../../hooks/useCategory";
+
 const FormAddCategory = ({ onCancel }) => {
 
     const { createCategory } = useCategory()

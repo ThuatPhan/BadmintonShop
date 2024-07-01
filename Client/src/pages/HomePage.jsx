@@ -1,22 +1,19 @@
-import Navbar from "../components/Navbar"
-import Search from "../components/Search"
-import Banner from "../components/Banner"
-import Features from "../components/Features"
-import Content from "../components/Content"
-import BestSeller from "../components/BestSeller"
-import Fact from "../components/Fact"
-import Footer from "../components/Footer"
-import BackToTop from "../components/BackToTop"
-import Spinner from "../components/Spinner"
+import Navbar from "../components/HomePage/Navbar"
+import Banner from "../components/HomePage/Banner"
+import Features from "../components/HomePage/Features"
+import Content from "../components/HomePage/Content"
+import BestSeller from "../components/HomePage/BestSeller"
+import Fact from "../components/HomePage/Fact"
+import Footer from "../components/HomePage/Footer"
+import BackToTop from "../components/HomePage/BackToTop"
 
 const HomePage = () => {
     return (
         <>
             <Navbar />
-            <Search />
             <Banner />
-            <Features />
             <Content />
+            <Features />
             <BestSeller />
             <Fact />
             <Footer />

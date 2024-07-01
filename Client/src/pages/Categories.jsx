@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import FormAddCategory from "../components/FormAddCategory"
-import FormEditCategory from '../components/FormEditCategory';
+import FormAddCategory from "../components/Category/FormAddCategory"
+import FormEditCategory from '../components/Category/FormEditCategory';
 import useCategory from '../hooks/useCategory';
-import Spinner from '../components/Spinner';
+import Spinner from '../components/HomePage/Spinner';
 
-const CategoriesPage = () => {
+const CategoryPage = () => {
 
     const { loading, categories, deleteCategory } = useCategory()
 
@@ -46,24 +46,26 @@ const CategoriesPage = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {categories.map((category) => (
-                                <tr key={category.id}>
-                                    <td>{category.name}</td>
-                                    <td style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center' }}>
-                                        <button
-                                            className="btn btn-success btn-sm"
-                                            onClick={() => handleShowEditForm(category.id)}>
-                                            Sửa
-                                        </button>
-                                        <button
-                                            className="btn btn-danger btn-sm"
-                                            onClick={() => handleDeleteCategory(category)}
-                                        >
-                                            Xoá
-                                        </button>
-                                    </td>
-                                </tr>
-                            ))}
+                            {
+                                categories.map((category) => (
+                                    <tr key={category.id}>
+                                        <td>{category.name}</td>
+                                        <td style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center' }}>
+                                            <button
+                                                className="btn btn-success btn-sm"
+                                                onClick={() => handleShowEditForm(category.id)}>
+                                                Sửa
+                                            </button>
+                                            <button
+                                                className="btn btn-danger btn-sm"
+                                                onClick={() => handleDeleteCategory(category)}
+                                            >
+                                                Xoá
+                                            </button>
+                                        </td>
+                                    </tr>
+                                ))
+                            }
                         </tbody>
                     </table>
                 </div>
@@ -83,4 +85,4 @@ const CategoriesPage = () => {
     );
 };
 
-export default CategoriesPage;
+export default CategoryPage;

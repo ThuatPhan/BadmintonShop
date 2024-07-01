@@ -18,8 +18,8 @@ const useAuth = () => {
             const data = await response.json()
 
             if (response.ok) {
-                setUser(data)
-                localStorage.setItem("user", data.token)
+                setUser(data.token)
+                localStorage.setItem("token", data.token)
             }
 
         } catch (error) {
@@ -40,8 +40,8 @@ const useAuth = () => {
             const data = await response.json()
 
             if (response.ok) {
-                setUser(data)
-                localStorage.setItem("user", data.token)
+                setUser(data.token)
+                localStorage.setItem("token", data.token)
             }
         } catch (error) {
             console.log(error)
