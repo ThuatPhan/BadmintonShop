@@ -1,9 +1,17 @@
+import { useContext } from "react"
 import useCategory from "../../hooks/useCategory"
 import Search from "./Search"
+import { AuthContext } from "../../context/AuthContext"
+import "../../assets/css/dropdown.css"
+import useAuth from "../../hooks/useAuth"
+
 
 const Navbar = () => {
 
     const { categories } = useCategory()
+    const { user } = useContext(AuthContext)
+    const { logout } = useAuth()
+
     return (
         <>
             <div className="container-fluid fixed-top">
@@ -37,9 +45,22 @@ const Navbar = () => {
                                 <a href="#" className="position-relative me-4 my-auto" onClick={() => window.location.href = "/cart"}>
                                     <i className="fa fa-shopping-bag fa-2x"></i>
                                 </a>
-                                <a href="/login" className="my-auto">
-                                    <i className="fas fa-user fa-2x"></i>
-                                </a>
+                                {
+                                    user ? (
+                                        <div className="dropdown">
+                                            <button className="dropbtn">{user.email}</button>
+                                            <div className="dropdown-content">
+                                                <a href="/admin">Trang admin</a>
+                                                <a onClick={logout}>Đăng xuất</a>
+                                            </div>
+                                        </div>
+                                    ) : (
+                                        <a href="/login" className="my-auto">
+                                            <i className="fas fa-user fa-2x"></i>
+                                        </a>
+                                    )
+                                }
+
                             </div>
                         </div>
                     </nav>

@@ -45,6 +45,10 @@ const useCart = () => {
 
             const token = localStorage.getItem("token")
 
+            if (!token) {
+                window.open("/login", "_self")
+            }
+
             const response = await fetch("/Api/api/cart",
                 {
                     method: "POST",

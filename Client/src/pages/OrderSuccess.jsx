@@ -1,11 +1,13 @@
 import Navbar from "../components/HomePage/Navbar"
 import Footer from "../components/HomePage/Footer"
 import { useEffect } from "react"
+import toast from "react-hot-toast"
 
 const OrderSuccess = () => {
     const orderInfor = JSON.parse(localStorage.getItem("orderInfor"))
 
     useEffect(() => {
+        toast.success("Đặt hàng thành công")
         if (orderInfor) {
             localStorage.removeItem("orderInfor")
         }

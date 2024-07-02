@@ -68,19 +68,22 @@ const useProduct = () => {
             formData.append("categoryId", productInfor.categoryId)
             formData.append("imageFile", selectedFile)
 
+            const token = localStorage.getItem("token")
+
             const response = await fetch("/Api/api/products", {
                 method: "POST",
+                headers: {
+                    "Authorization": `Bearer ${token}`,
+                },
                 body: formData
             })
 
             const data = await response.json()
 
             if (response.ok) {
-                setProducts((prev) => {
-                    console.log([...prev, data]);
-                    return [...prev, data]
-                })
-                console.log(products);
+                setProducts((prev) => [...prev, data])
+            } else {
+                console.log(data);
             }
 
         } catch (error) {
@@ -102,9 +105,15 @@ const useProduct = () => {
                 formData.append("imageFile", selectedFile)
             }
 
+
+            const token = localStorage.getItem("token")
+
             const response = await fetch(`/Api/api/products/${productId}`,
                 {
                     method: "PUT",
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    },
                     body: formData
                 }
             )
@@ -136,9 +145,15 @@ const useProduct = () => {
 
     const deleteProduct = async (productId) => {
         try {
+
+            const token = localStorage.getItem("token")
+
             const response = await fetch(`/Api/api/products/${productId}`,
                 {
-                    method: "DELETE"
+                    method: "DELETE",
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
                 }
             )
 

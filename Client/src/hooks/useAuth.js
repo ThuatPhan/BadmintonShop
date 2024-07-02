@@ -18,7 +18,8 @@ const useAuth = () => {
             const data = await response.json()
 
             if (response.ok) {
-                setUser(data.token)
+                setUser(data.user)
+                localStorage.setItem("user", JSON.stringify(data.user))
                 localStorage.setItem("token", data.token)
             }
 
@@ -40,8 +41,11 @@ const useAuth = () => {
             const data = await response.json()
 
             if (response.ok) {
-                setUser(data.token)
+                localStorage.setItem("user", JSON.stringify(data.user))
                 localStorage.setItem("token", data.token)
+                
+                
+                setUser(data.user)
             }
         } catch (error) {
             console.log(error)
@@ -57,8 +61,12 @@ const useAuth = () => {
 
             const token = localStorage.getItem("token")
             if (token) {
+
+                localStorage.removeItem("user")
                 localStorage.removeItem("token")
+
                 setUser(null)
+
                 toast.success("Đã đăng xuất tài khoản !")
             }
 
