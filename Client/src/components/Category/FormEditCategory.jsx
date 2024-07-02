@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import useCategory from "../hooks/useCategory";
+import useCategory from "../../hooks/useCategory";
 
 const FormEditCategory = ({ onCancel, idToEdit }) => {
     const { getCategory, updateCategory } = useCategory()

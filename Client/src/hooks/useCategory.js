@@ -30,8 +30,10 @@ const useCategory = () => {
     const getCategory = async (categoryId) => {
         try {
             setLoading(true)
+
             const response = await fetch(`/Api/api/categories/${categoryId}`)
             const data = await response.json()
+
             if (response.ok) {
                 return data;
             }
@@ -48,16 +50,22 @@ const useCategory = () => {
     const createCategory = async (category) => {
         try {
             setLoading(true)
+
+            const token = localStorage.getItem("token")
+
             const response = await fetch("/Api/api/categories",
                 {
                     method: "POST",
                     headers: {
+                        "Authorization": `Bearer ${token}`,
                         "Content-Type": "application/json"
                     },
                     body: JSON.stringify(category)
                 }
             )
+
             const data = await response.json()
+
             if (response.ok) {
                 setCategories((prev) => [...prev, data])
             } else {
@@ -74,10 +82,15 @@ const useCategory = () => {
     const updateCategory = async (category) => {
         try {
             setLoading(true)
+
+            const token = localStorage.getItem("token")
+
+
             const response = await fetch(`/Api/api/categories/${category.id}`,
                 {
                     method: "PUT",
                     headers: {
+                        "Authorization": `Bearer ${token}`,
                         "Content-Type": "application/json"
                     },
                     body: JSON.stringify(category)
@@ -107,13 +120,17 @@ const useCategory = () => {
     const deleteCategory = async (categoryId) => {
         try {
             setLoading(true)
+
+            const token = localStorage.getItem("token")
+
             const response = await fetch(`/Api/api/categories/${categoryId}`,
                 {
                     method: "DELETE",
+                    headers: {
+                        "Authorization": `Bearer ${token}`,
+                    }
                 }
             )
-
-            // const data = await response.json()
 
             if (response.ok) {
 

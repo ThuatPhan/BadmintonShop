@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import FormAddProduct from "../components/FormAddProduct"
-import FormEditProduct from '../components/FormEditProduct';
+import FormAddProduct from "../components/Product/FormAddProduct"
+import FormEditProduct from '../components/Product/FormEditProduct';
 import useProduct from '../hooks/useProduct';
 
 
@@ -34,35 +34,44 @@ const ProductsPage = () => {
                 <table className="table table-bordered" style={{ width: '100%' }}>
                     <thead className="table-dark">
                         <tr>
-                            <th>Name</th>
-                            <th>Price</th>
-                            <th>Image</th>
-                            <th>Actions</th>
+                            <th>Tên sản phẩm</th>
+                            <th>Giá</th>
+                            <th>Ảnh</th>
+                            <th>Tác vụ</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {products.map(product => (
-                            <tr key={product.id}>
-                                <td>{product.name}</td>
-                                <td>{product.price.toLocaleString()} VND</td>
-                                <td>
-                                    <img
-                                        src={`http://localhost:8080${product.imageUrl}`}
-                                        alt={product.name}
-                                        style={{ width: '50px', height: 'auto' }}
-                                    />
-                                </td>
-                                <td style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center' }}>
-                                    <button className="btn btn-success btn-sm" onClick={() => handleShowEditForm(product.id)}>Edit</button>
-                                    <button
-                                        className="btn btn-danger btn-sm"
-                                        onClick={() => handleDeleteProduct(product)}
-                                    >
-                                        Delete
-                                    </button>
-                                </td>
-                            </tr>
-                        ))}
+                        {
+                            products.map(product => (
+                                <tr key={product.id}>
+                                    <td>{product.name}</td>
+                                    <td>{product.price.toLocaleString()} VND</td>
+                                    <td>
+                                        <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+                                            <img
+                                                src={`http://localhost:8080${product.imageUrl}`}
+                                                alt={product.name}
+                                                style={{ width: '100px', height: 'auto' }}
+                                            />
+                                        </div>
+                                    </td>
+                                    <td style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center' }}>
+                                        <button
+                                            className="btn btn-success btn-sm"
+                                            onClick={() => handleShowEditForm(product.id)}
+                                        >
+                                            Edit
+                                        </button>
+                                        <button
+                                            className="btn btn-danger btn-sm"
+                                            onClick={() => handleDeleteProduct(product)}
+                                        >
+                                            Delete
+                                        </button>
+                                    </td>
+                                </tr>
+                            ))
+                        }
                     </tbody>
                 </table>
             </div>

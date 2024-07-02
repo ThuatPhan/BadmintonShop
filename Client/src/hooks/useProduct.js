@@ -3,6 +3,7 @@ import { useEffect, useState } from "react"
 const useProduct = () => {
     const [loading, setLoading] = useState(false)
     const [products, setProducts] = useState([])
+    const [productsOfCategory, setProductsOfCategory] = useState([])
 
     useEffect(() => {
         const getProducts = async () => {
@@ -22,14 +23,35 @@ const useProduct = () => {
             setLoading(true)
 
             const response = await fetch(`/Api/api/products/${productId}`)
-            const data = response.json()
+            const data = await response.json()
             if (response.ok) {
                 return data
-            } else
+            } else {
                 console.log(data)
+            }
         } catch (error) {
             console.log(error)
 
+        } finally {
+            setLoading(false)
+        }
+    }
+
+    const getProductOfCategory = async (categoryId) => {
+        try {
+            setLoading(true)
+            const response = await fetch(`/Api/api/categories/${categoryId}/products`)
+            const data = await response.json()
+
+            if (response.ok) {
+                //for home page
+                setProducts(data)
+                //for product in category page
+                setProductsOfCategory(data)
+            }
+
+        } catch (error) {
+            console.log(error);
         } finally {
             setLoading(false)
         }
@@ -46,8 +68,13 @@ const useProduct = () => {
             formData.append("categoryId", productInfor.categoryId)
             formData.append("imageFile", selectedFile)
 
+            const token = localStorage.getItem("token")
+
             const response = await fetch("/Api/api/products", {
                 method: "POST",
+                headers: {
+                    "Authorization": `Bearer ${token}`,
+                },
                 body: formData
             })
 
@@ -55,6 +82,8 @@ const useProduct = () => {
 
             if (response.ok) {
                 setProducts((prev) => [...prev, data])
+            } else {
+                console.log(data);
             }
 
         } catch (error) {
@@ -71,11 +100,20 @@ const useProduct = () => {
             formData.append("description", productInfor.description)
             formData.append("price", productInfor.price)
             formData.append("categoryId", productInfor.categoryId)
-            formData.append("imageFile", selectedFile)
+
+            if (selectedFile) {
+                formData.append("imageFile", selectedFile)
+            }
+
+
+            const token = localStorage.getItem("token")
 
             const response = await fetch(`/Api/api/products/${productId}`,
                 {
                     method: "PUT",
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    },
                     body: formData
                 }
             )
@@ -107,9 +145,15 @@ const useProduct = () => {
 
     const deleteProduct = async (productId) => {
         try {
+
+            const token = localStorage.getItem("token")
+
             const response = await fetch(`/Api/api/products/${productId}`,
                 {
-                    method: "DELETE"
+                    method: "DELETE",
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
                 }
             )
 
@@ -128,7 +172,9 @@ const useProduct = () => {
     return {
         loading,
         products,
+        productsOfCategory,
         getProduct,
+        getProductOfCategory,
         createProduct,
         updateProduct,
         deleteProduct

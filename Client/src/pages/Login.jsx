@@ -45,7 +45,7 @@ const LoginPage = () => {
                         />
                     </div>
                     <div style={styles.rememberMe}>
-                        <a href="#" style={styles.forgotPassword}>Chưa có tài khoản? <b>Đăng kí</b></a>
+                        <a href="/register" style={styles.forgotPassword}>Chưa có tài khoản? <b>Đăng kí</b></a>
                         <a href="#" style={styles.forgotPassword}>Quên mật khẩu</a>
                     </div>
                     <button type="submit" style={styles.btnLogin}>{loading ? "Đang đăng nhập ..." : "Đăng nhập"}</button>

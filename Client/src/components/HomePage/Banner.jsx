@@ -1,5 +1,5 @@
-import strings from "../assets/img/strings.jpg"
-import rackets from "../assets/img/rackets.jpg"
+import strings from "../../assets/img/strings.jpg"
+import rackets from "../../assets/img/rackets.jpg"
 
 
 const Banner = () => {
