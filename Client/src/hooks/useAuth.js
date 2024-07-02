@@ -1,6 +1,6 @@
 import { useContext, useState } from "react"
 import { AuthContext } from "../context/AuthContext"
-
+import toast from "react-hot-toast"
 
 const useAuth = () => {
 
@@ -54,15 +54,12 @@ const useAuth = () => {
     const logout = async () => {
         try {
             setLoading(true)
-            const response = await fetch("/Api/api/auth/logout", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-            })
-            const data = await response.json()
 
-            if (response.ok) {
-                setUser(null)
+            const token = localStorage.getItem("token")
+            if (token) {
                 localStorage.removeItem("token")
+                setUser(null)
+                toast.success("Đã đăng xuất tài khoản !")
             }
 
         } catch (error) {

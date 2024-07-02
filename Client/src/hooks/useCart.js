@@ -156,13 +156,43 @@ const useCart = () => {
 
     }
 
+    const checkOut = async (orderInfor) => {
+        try {
+
+            const token = localStorage.getItem("token")
+
+            const response = await fetch("/Api/api/order",
+                {
+                    method: "POST",
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify(orderInfor)
+                }
+            )
+
+            const data = await response.json()
+
+            if (response.ok) {
+                localStorage.setItem("orderInfor", JSON.stringify(data))
+                window.open("/order-success", "_self")
+            } else {
+                console.log(data)
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
     return {
         loading,
         cartItems,
         addToCart,
         increaseQuantity,
         decreaseQuantity,
-        deleteItem
+        deleteItem,
+        checkOut,
     }
 }
 

@@ -1,40 +1,22 @@
 import Navbar from "../components/HomePage/Navbar"
 import Footer from "../components/HomePage/Footer"
-import useCart from "../hooks/useCart"
-import { useEffect, useState } from "react"
+import { useEffect } from "react"
 
+const OrderSuccess = () => {
+    const orderInfor = JSON.parse(localStorage.getItem("orderInfor"))
 
-const CheckOut = () => {
-
-    const { cartItems, checkOut } = useCart()
-    const [total, setTotal] = useState(0)
-
-    const [orderInfor, setOrderInfor] = useState({
-        firstName: "",
-        lastName: "",
-        city: "",
-        address: "",
-        note: ""
-    })
-
-    
     useEffect(() => {
-        const totalAmount = cartItems.reduce((sum, cartItem) => sum + cartItem.total, 0)
-        setTotal(totalAmount)
-    }, [cartItems])
-    
-    
-    const handleCheckOut = async () => {
-        await checkOut(orderInfor)
-    }
-    
+        if (orderInfor) {
+            localStorage.removeItem("orderInfor")
+        }
+    }, [])
 
     return (
         <>
             <Navbar />
             <div className="container-fluid py-5">
                 <div className="container py-5">
-                    <h1 className="mb-4">Chi tiết đơn hàng</h1>
+                    <h1 className="mb-4">Thông tin đơn hàng</h1>
                     <div className="row g-5">
                         <div className="col-md-12 col-lg-6 col-xl-4">
                             <div className="row">
@@ -43,10 +25,9 @@ const CheckOut = () => {
                                         <label className="form-label my-3">Họ<sup>*</sup></label>
                                         <input
                                             type="text"
-                                            required
                                             className="form-control"
-                                            value={orderInfor.lastName}
-                                            onChange={(e) => setOrderInfor({ ...orderInfor, lastName: e.target.value })}
+                                            value={orderInfor?.lastName}
+                                            readOnly
                                         />
                                     </div>
                                 </div>
@@ -55,10 +36,9 @@ const CheckOut = () => {
                                         <label className="form-label my-3">Tên<sup>*</sup></label>
                                         <input
                                             type="text"
-                                            required
                                             className="form-control"
-                                            value={orderInfor.firstName}
-                                            onChange={(e) => setOrderInfor({ ...orderInfor, firstName: e.target.value })}
+                                            value={orderInfor?.firstName}
+                                            readOnly
                                         />
                                     </div>
                                 </div>
@@ -67,22 +47,19 @@ const CheckOut = () => {
                                 <label className="form-label my-3">Địa chỉ <sup>*</sup></label>
                                 <input
                                     type="text"
-                                    required
                                     className="form-control"
                                     placeholder="Số nhà, Tên đường"
-                                    value={orderInfor.address}
-                                    onChange={(e) => setOrderInfor({ ...orderInfor, address: e.target.value })}
+                                    value={orderInfor?.address}
+                                    readOnly
                                 />
                             </div>
                             <div className="form-item">
                                 <label className="form-label my-3">Tỉnh/Thành phố<sup>*</sup></label>
                                 <input
                                     type="text"
-                                    required
                                     className="form-control"
-                                    value={orderInfor.city}
-                                    onChange={(e) => setOrderInfor({ ...orderInfor, city: e.target.value })}
-
+                                    value={orderInfor?.city}
+                                    readOnly
                                 />
                             </div>
                             <hr />
@@ -93,8 +70,7 @@ const CheckOut = () => {
                                     spellCheck="false"
                                     cols="30"
                                     rows="7"
-                                    placeholder="Ghi chú (Tuỳ chon)"
-                                    onChange={(e) => setOrderInfor({ ...orderInfor, note: e.target.value })}
+                                    value={orderInfor?.note}
                                 >
                                 </textarea>
                             </div>
@@ -113,7 +89,8 @@ const CheckOut = () => {
                                     </thead>
                                     <tbody>
                                         {
-                                            cartItems.map((item) => {
+
+                                            orderInfor && orderInfor.orderDetails.map((item) => {
                                                 return (
                                                     <tr key={item.cartItemId}>
                                                         <th scope="row">
@@ -139,7 +116,7 @@ const CheckOut = () => {
                                             <td className="py-5"></td>
                                             <td className="py-5">
                                                 <div className="border-bottom border-top">
-                                                    <p className="text-dark">{total.toLocaleString()}đ</p>
+                                                    <p className="text-dark">{orderInfor?.total.toLocaleString()}đ</p>
                                                 </div>
                                             </td>
                                         </tr>
@@ -147,9 +124,9 @@ const CheckOut = () => {
                                 </table>
                             </div>
                             <div className="row g-4 text-center align-items-center justify-content-center pt-4">
-                                <button onClick={handleCheckOut} type="submit" className="btn border-secondary py-3 px-4 text-uppercase w-100 text-primary"
+                                <button onClick={() => window.location.href = "/"} type="submit" className="btn border-secondary py-3 px-4 text-uppercase w-100 text-primary"
                                 >
-                                    Đặt hàng
+                                    Quay về trang chủ
                                 </button>
                             </div>
                         </div>
@@ -161,4 +138,4 @@ const CheckOut = () => {
     )
 }
 
-export default CheckOut;
+export default OrderSuccess;
