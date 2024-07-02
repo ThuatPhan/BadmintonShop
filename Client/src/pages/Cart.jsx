@@ -5,9 +5,13 @@ import { useEffect, useState } from "react"
 
 
 const Cart = () => {
-    const { cartItems, increaseQuantity, decreaseQuantity, deleteItem } = useCart()
+    const {
+        cartItems,
+        increaseQuantity,
+        decreaseQuantity,
+        deleteItem,
+    } = useCart()
     const [total, setTotal] = useState(0)
-
 
     useEffect(() => {
 
@@ -116,7 +120,10 @@ const Cart = () => {
                                         {total.toLocaleString()}đ
                                     </p>
                                 </div>
-                                <button className="btn border-secondary rounded-pill px-4 py-3 text-primary text-uppercase mb-4 ms-4" type="button"
+                                <button
+                                    className="btn border-secondary rounded-pill px-4 py-3 text-primary text-uppercase mb-4 ms-4"
+                                    type="button"
+                                    disabled={cartItems.length === 0}
                                     onClick={() => window.location.href = "/checkout"}>
                                     Thanh toán
                                 </button>

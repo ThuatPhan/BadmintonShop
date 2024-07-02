@@ -69,7 +69,7 @@ const ProductOfCategory = () => {
                                                         <p className="text-dark fs-5 fw-bold mb-0">
                                                             {product.price.toLocaleString()}đ
                                                         </p>
-                                                        <a className="btn border border-secondary rounded-pill px-3 text-primary">
+                                                        <a onClick={() => handleAddToCart(product.id)} className="btn border border-secondary rounded-pill px-3 text-primary">
                                                             <i className="fa fa-shopping-bag me-2 text-primary"></i>
                                                             Add to cart
                                                         </a>
